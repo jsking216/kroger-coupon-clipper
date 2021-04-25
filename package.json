@@ -1,0 +1,27 @@
+{
+  "name": "kroger-coupon-clipper",
+  "version": "1.0.0",
+  "description": "Use puppeteer to clip Kroger coupons",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsking216/kroger-coupon-clipper.git"
+  },
+  "keywords": [
+    "kroger",
+    "coupon"
+  ],
+  "author": "Joshua King <jarf1337@gmail.com> (https://jarf.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsking216/kroger-coupon-clipper/issues"
+  },
+  "homepage": "https://github.com/jsking216/kroger-coupon-clipper#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "puppeteer": "^9.0.0"
+  }
+}
