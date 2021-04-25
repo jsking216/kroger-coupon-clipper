@@ -26,13 +26,14 @@ async function clickAndEnterText(page, selector, text) {
   await page.type(selector, text);
 }
 
-(async () => {
-  const browser = await puppeteer.launch({headless: false, slowMo: 150, args: ["--disable-web-security"]});
-  const page = await browser.newPage();
+async function setConfig(page, config) {
+  if (config.viewport) {
+    await page.setViewport(config.viewport);
+  }
+  if (config.userAgent) {
+    await page.setUserAgent(config.userAgent);
+  }
 
-  // browser config stuffs
-  await page.setViewport({ width: 1280, height: 800 });
-  await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36');
   await page.evaluateOnNewDocument(() => {
     Object.defineProperty(navigator, 'webdriver', {
         get: () => false,
@@ -52,23 +53,39 @@ async function clickAndEnterText(page, selector, text) {
           request.continue();
       }
   });
-  
+}
+
+async function login(page, creds) {
   await page.goto('https://www.kroger.com/signin', { waitUntil: 'networkidle2' });
   await page.waitForSelector(emailSelector);
   
-  const email = process.env.KROGER_EMAIL;
-  const password = process.env.KROGER_PASSWORD;
-
-  console.log(email);
-  console.log(password);
-
   // intentionally delay things to hopefully avoid whatever detection kroger is using
   await delay(3);
-  await clickAndEnterText(page, emailSelector, email);
+  await clickAndEnterText(page, emailSelector, creds.email);
   await delay(2);
-  await clickAndEnterText(page, passwordSelector, password);
+  await clickAndEnterText(page, passwordSelector, creds.password);
   await delay(1);
   await page.click(submitButton);
+}
+
+(async () => {
+  const browser = await puppeteer.launch({headless: false, slowMo: 150, args: ["--disable-web-security"]});
+  const page = await browser.newPage();
+
+  // browser config stuffs
+  const config = {
+    viewport: { width: 1280, height: 800 },
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36'
+  };
+  await setConfig(page, config);
+  
+
+  const creds = {
+    email: process.env.KROGER_EMAIL,
+    password: process.env.KROGER_PASSWORD
+  };
+
+  await login(page, creds);
 
   await delay(30);
   await page.goto('https://www.kroger.com/savings/cl/coupons/', { waitUntil: 'networkidle2' });
