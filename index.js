@@ -120,5 +120,5 @@ async function login(page, creds) {
   }
 
   console.log('Finished clipping!');
-
+  process.exit(0);
 })();
