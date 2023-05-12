@@ -10,7 +10,7 @@ const passwordSelector = '#SignIn-passwordInput';
 const submitButton = '#SignIn-submitButton';
 
 // coupon page selectors
-const inStoreCheckbox = '#SearchableList-item-In-Store';
+const inStoreCheckbox = '#Filter-item-In-Store';
 const couponCountXpath = '//div[contains(@aria-label, "clickable item.")]';
 const allClipButtons = 'div.CouponCard-ButtonSection > button.kds-Button.kds-Button--primary';
 
